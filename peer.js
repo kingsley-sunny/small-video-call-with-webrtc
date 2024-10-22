@@ -1,94 +1,104 @@
-const users = [];
+// const users = [];
 
-window.onload = async () => {
-  const button = document.querySelector("#connect");
-  const endCall = document.querySelector("#end-call");
+// window.onload = async () => {
+//   const button = document.querySelector("#connect");
+//   const endCall = document.querySelector("#end-call");
 
-  const name = prompt("What is your name");
+//   const name = prompt("What is your name");
 
-  // first get the user navigator devices
+//   // first get the user navigator devices
 
-  const stream = await getUserMedia();
-  console.log("🚀 ~~ window.onload= ~~ stream:", stream);
+//   const stream = await getUserMedia();
+//   console.log("🚀 ~~ window.onload= ~~ stream:", stream);
 
-  // then render the stream
-  renderVideoElement(stream, "main-user");
+//   // then render the stream
+//   renderVideoElement(stream, "main-user");
 
-  const peer = new Peer(name);
-  peer.on("open", id => {
-    users.push(id);
-    renderText(id);
-  });
+//   const peer = new Peer(name, {
+//     config: {
+//       iceServers: [
+//         { url: "stun:stun1.1.google.com:19302" },
+//         { url: "stun:stun2.1.google.com:19302" },
+//       ],
+//     },
+//   });
 
-  peer.on("call", call => {
-    call.answer(stream);
-    console.log("🚀 ~~ window.onload= ~~ on call:", stream?.getVideoTracks()[0]);
+//   console.log(peer);
 
-    call.on("stream", remoteStream => {
-      console.log("🚀 ~~ window.onload= ~~ remoteStream:", remoteStream?.getVideoTracks()[0]);
+//   peer.on("open", id => {
+//     users.push(id);
+//     renderText(id);
+//   });
 
-      renderVideoElement(remoteStream, "remote-user", false);
-    });
-  });
+//   peer.on("call", call => {
+//     call.answer(stream);
+//     console.log("🚀 ~~ window.onload= ~~ on call:", stream?.getVideoTracks()[0]);
 
-  peer.on("close", call => {
-    document.getElementById("remote-user").remove();
-  });
+//     call.on("stream", remoteStream => {
+//       console.log("🚀 ~~ window.onload= ~~ remoteStream:", remoteStream?.getVideoTracks()[0]);
 
-  // get the button
-  button.addEventListener("click", async () => {
-    const userId = document.querySelector("#user-id")?.value;
+//       renderVideoElement(remoteStream, "remote-user", false);
+//     });
+//   });
 
-    if (!userId) {
-      alert("Please enter a user-id");
-      return;
-    }
+//   peer.on("close", call => {
+//     document.getElementById("remote-user").remove();
+//   });
 
-    const call = peer.call(userId, stream);
+//   // get the button
+//   button.addEventListener("click", async () => {
+//     const userId = document.querySelector("#user-id")?.value;
 
-    call.on("stream", remoteStream => {
-      console.log(
-        "🚀 ~~ button.addEventListener ~~ remoteStream:",
-        remoteStream?.getVideoTracks()[0]
-      );
-      renderVideoElement(remoteStream, "remote-user", false);
-    });
-  });
+//     if (!userId) {
+//       alert("Please enter a user-id");
+//       return;
+//     }
 
-  endCall.addEventListener("click", async () => {
-    peer.destroy();
-  });
-};
+//     const call = peer.call(userId, stream);
 
-const renderVideoElement = (stream, id, muted = true) => {
-  console.log("🚀 ~~ renderVideoElement ~~ stream:", stream?.getVideoTracks()[0]);
+//     call.on("stream", remoteStream => {
+//       console.log(
+//         "🚀 ~~ button.addEventListener ~~ remoteStream:",
+//         remoteStream?.getVideoTracks()[0]
+//       );
+//       renderVideoElement(remoteStream, "remote-user", false);
+//     });
+//   });
 
-  const videos = document.getElementById("videos");
-  let video = document.getElementById(id);
-  if (!video) {
-    video = document.createElement("video");
-  }
+//   endCall.addEventListener("click", async () => {
+//     peer.destroy();
+//   });
+// };
 
-  video.autoplay = true;
-  video.muted = muted;
-  video.srcObject = stream;
-  video.id = id;
-  video.addEventListener("loadedmetadata", () => {
-    video.play();
-  });
+// const renderVideoElement = (stream, id, muted = true) => {
+//   console.log("🚀 ~~ renderVideoElement ~~ stream:", stream?.getVideoTracks()[0]);
 
-  videos.appendChild(video);
-  return video;
-};
+//   const videos = document.getElementById("videos");
+//   let video = document.getElementById(id);
+//   if (!video) {
+//     video = document.createElement("video");
+//   }
 
-const renderText = text => {
-  const p = document.createElement("p");
-  p.innerText = "Name: " + text;
-  document.querySelector("h2").appendChild(p);
-  return p;
-};
+//   video.autoplay = true;
+//   video.muted = muted;
+//   video.srcObject = stream;
+//   video.id = id;
+//   video.addEventListener("loadedmetadata", () => {
+//     video.play();
+//   });
 
-const getUserMedia = async () => {
-  const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-  return stream;
-};
+//   videos.appendChild(video);
+//   return video;
+// };
+
+// const renderText = text => {
+//   const p = document.createElement("p");
+//   p.innerText = "Name: " + text;
+//   document.querySelector("h2").appendChild(p);
+//   return p;
+// };
+
+// const getUserMedia = async () => {
+//   const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+//   return stream;
+// };

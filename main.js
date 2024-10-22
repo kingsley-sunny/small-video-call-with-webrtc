@@ -2,16 +2,10 @@ let peerConnection;
 let localStream;
 let remoteStream;
 
-const iceServers = [{ urls: ["stun:stun1.1.google.com:19302", "stun:stun2.1.google.com:19302"] }];
+const iceServers = [{ urls: ["stun:stun1.1.google.com:19302"] }];
 
 const init = async () => {
-  localStream = await window.navigator.mediaDevices.getUserMedia({
-    video: true,
-    audio: {
-      echoCancellation: true,
-      noiseSuppression: true,
-    },
-  });
+  localStream = await window.navigator.mediaDevices.getUserMedia({ video: true, audio: false });
 
   document.getElementById("user-1").srcObject = localStream;
 };
