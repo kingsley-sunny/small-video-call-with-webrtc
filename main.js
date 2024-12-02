@@ -80,6 +80,12 @@ const addAnswer = async () => {
   if (!peerConnection.currentRemoteDescription) {
     peerConnection.setRemoteDescription(answer);
   }
+
+  console.log(
+    "🚀 ~~ peerConnection.currentRemoteDescription:",
+    peerConnection,
+    peerConnection.currentRemoteDescription
+  );
 };
 
 window.onload = init();
